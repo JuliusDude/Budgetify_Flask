@@ -6,5 +6,22 @@
 {% endblock %}
 
 {% block body %}
-    <div>Budgetify</div>
+    <div>
+        <h1 style="text-align: center;">Bugetify</h1>
+    </div>
+    <section>
+        <div>
+            <h3>Current Balance: 63627</h3>
+            <h3>Current Month Spendings: 956</h3>
+            <h3>Previous</h3>
+        </div>
+        <div>
+            <form action="/",method ="POST">
+                <input type="number" name="cash" id="cash_input">
+                <input type="text" name="description" id="desc">
+                <input type="radio" name="type" id="cash_type">
+                <input type="submit" value="Add Task" id="btn_add">
+            </form>
+        </div>
+    </section>
 {% endblock %}
