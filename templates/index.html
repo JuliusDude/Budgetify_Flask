@@ -6,9 +6,12 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h1 style="text-align: center;">Bugetify</h1>
-    </div>
+    <section>
+        <div>
+            <h1 style="text-align: center;">Bugetify</h1>
+        </div>
+    </section>
+
     <section>
         <div>
             <h3>Current Balance: 63627</h3>
@@ -16,11 +19,47 @@
             <h3>Previous</h3>
         </div>
         <div>
-            <form action="/",method ="POST">
+            {% if tasks | length < 1 %}
+                <h3>No logs</h3>
+                {% else %}
+                <table>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>Amount</th>
+                        <th>Transaction Type</th>
+                        <th>Description</th>
+                        <th>date_created</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{task.log_id}}</td>
+                            <td>{{task.cash}}</td>
+                            <td>{{task.cash_type}}</td>
+                            <td>{{task.desc}}</td>
+                            <td>{{task.date_created.strftime("%d-%m-%Y")}}</td>
+                            <td><a href="/delete/{{task.log_id}}">Delete</a>
+                            <a href="/edit/{{task.log_id}}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+        <div>
+            <form action="/" method ="POST">
+                <label for="cash_input">Amount:</label>
                 <input type="number" name="cash" id="cash_input">
-                <input type="text" name="description" id="desc">
-                <input type="radio" name="type" id="cash_type">
-                <input type="submit" value="Add Task" id="btn_add">
+                <br>
+                <label for="desc">Description:</label>
+                <input type="text" name="desc" id="desc">
+                <br>
+                <label for="cash_type">Type</label>
+                <select name="cash_type" id="cash_type">
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                </select>
+                <br>
+                <input type="submit" value="Add" id="btn_add">
             </form>
         </div>
     </section>

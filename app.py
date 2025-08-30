@@ -25,9 +25,24 @@ class MyTask(db.Model):
 
     
 #home 
-@app.route("/")
+@app.route("/", methods=["POST","GET"])
 def index():
-    return render_template('index.html')
+    if request.method == "POST":
+        cash = request.form['cash']
+        cash_type = request.form['cash_type']
+        desc = request.form['desc']
+        new_task = MyTask(cash= cash, cash_type=cash_type,desc=desc)
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect("/")
+        except Exception as e:
+            print(f"Error :{e}")
+            return f"Error {e}"
+    else:        
+        tasks = MyTask.query.order_by(MyTask.date_created).all()
+        return render_template("index.html", tasks=tasks)
+
 
 
 if __name__ == "__main__":
