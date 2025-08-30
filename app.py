@@ -41,7 +41,64 @@ def index():
             return f"Error {e}"
     else:        
         tasks = MyTask.query.order_by(MyTask.date_created).all()
-        return render_template("index.html", tasks=tasks)
+        '''balance = db.session.query(
+            db.func.sum(
+            db.case(
+                [(MyTask.cash_type == 'credit', MyTask.cash)],
+                else_=-MyTask.cash
+            )
+            )
+        ).scalar() or 0
+        '''
+        # Calculate balance
+        balance = 0
+        for task in tasks:
+            if task.cash_type.lower() == "credit":
+                balance += task.cash
+            else:  # debit
+                balance -= task.cash
+        return render_template("index.html", tasks=tasks, balance=balance)
+
+
+
+#Delete 
+
+@app.route("/delete/<int:log_id>")
+def delete(log_id:int):
+    delete_log = MyTask.query.get_or_404(log_id)
+    try:
+        db.session.delete(delete_log)
+        db.session.commit()
+        return redirect("/")
+    except Exception as e:
+        return f"ERROR: {e}"
+
+
+# Edit an item 
+@app.route("/edit/<int:log_id>",methods=["GET","POST"])
+def edit(log_id:int):
+    task = MyTask.query.get_or_404(log_id)
+    if request.method == "POST":
+        cash = request.form['cash']
+        cash_type = request.form['cash_type']
+        desc = request.form['desc']
+        new_task = MyTask(cash= cash, cash_type=cash_type,desc=desc)
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect("/")
+        except Exception as e:
+            return f"Error: {e}"
+    else:
+        return render_template('edit.html',task=task)
+
+
+#STATS
+@app.route("/stats")
+def stat():
+    return render_template('stats.html')
+
+
 
 
 

@@ -6,19 +6,14 @@
 {% endblock %}
 
 {% block body %}
-    <section>
-        <div>
-            <h1 style="text-align: center;">Bugetify</h1>
-        </div>
-    </section>
 
     <section>
         <div>
-            <h3>Current Balance: 63627</h3>
-            <h3>Current Month Spendings: 956</h3>
-            <h3>Previous</h3>
+            <h3>Current Balance: {{balance}}</h3>
         </div>
+        <br>
         <div>
+            <h2>Entries</h2>
             {% if tasks | length < 1 %}
                 <h3>No logs</h3>
                 {% else %}
@@ -34,8 +29,12 @@
                     {% for task in tasks %}
                         <tr>
                             <td>{{task.log_id}}</td>
-                            <td>{{task.cash}}</td>
-                            <td>{{task.cash_type}}</td>
+                            {% if task.cash_type == "credit" %}
+                            <td style="color: green;">{{task.cash}}</td>
+                            {% else %}
+                            <td style="color: red;">{{task.cash}}</td>
+                            {% endif %}    
+                            <td >{{task.cash_type}}</td>
                             <td>{{task.desc}}</td>
                             <td>{{task.date_created.strftime("%d-%m-%Y")}}</td>
                             <td><a href="/delete/{{task.log_id}}">Delete</a>
@@ -46,9 +45,12 @@
                 {% endif %}
         </div>
         <div>
+            <br>
+            <h2>Entry</h2>
+            <br>
             <form action="/" method ="POST">
                 <label for="cash_input">Amount:</label>
-                <input type="number" name="cash" id="cash_input">
+                <input type="number" name="cash" id="cash_input" required>
                 <br>
                 <label for="desc">Description:</label>
                 <input type="text" name="desc" id="desc">

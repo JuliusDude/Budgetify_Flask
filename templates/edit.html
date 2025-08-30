@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Budgetify-Edit</title>
+{% endblock %}
+
+{% block body %}
+    <div >
+        <h1>Edit your Log</h1>
+            <form action="/edit/{{task.log_id}}" method ="POST">
+                <label for="cash_input">Amount:</label>
+                <input type="number" name="cash" id="cash_input" value="{{task.cash}}">
+                <br>
+                <label for="desc">Description:</label>
+                <input type="text" name="desc" id="desc" value="{{task.desc}}">
+                <br>
+                <label for="cash_type">Type</label>
+                <select name="cash_type" id="cash_type" ">
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                </select>
+                <br>
+                <input type="submit" value="Add" id="btn_add">
+            </form>
+    </div>
+
+{% endblock %}
