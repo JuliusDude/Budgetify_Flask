@@ -77,14 +77,16 @@ def delete(log_id:int):
 # Edit an item 
 @app.route("/edit/<int:log_id>",methods=["GET","POST"])
 def edit(log_id:int):
+    print("working")
     task = MyTask.query.get_or_404(log_id)
     if request.method == "POST":
         cash = request.form['cash']
         cash_type = request.form['cash_type']
         desc = request.form['desc']
-        new_task = MyTask(cash= cash, cash_type=cash_type,desc=desc)
+        task.cash = cash
+        task.cash_type = cash_type
+        task.desc = desc
         try:
-            db.session.add(new_task)
             db.session.commit()
             return redirect("/")
         except Exception as e:
