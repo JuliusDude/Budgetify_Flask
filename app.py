@@ -96,7 +96,18 @@ def edit(log_id:int):
 #STATS
 @app.route("/stats")
 def stat():
-    return render_template('stats.html')
+    tasks = MyTask.query.order_by(MyTask.date_created).all()
+    totalTransaction = credit = debit = 0
+    balance = 0
+    for task in tasks:
+        if task.cash_type.lower() == "credit":
+            credit+= task.cash
+        else:  # debit
+            debit += task.cash
+    totalTransaction = credit + debit
+    balance = credit - debit
+
+    return render_template('stats.html',totalTransaction=totalTransaction, credit=credit, debit= debit, balance=balance)
 
 
 

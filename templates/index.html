@@ -1,68 +1,68 @@
 {% extends 'base.html' %}
 
-
 {% block head %} 
     <title>Budgetify</title> 
 {% endblock %}
 
 {% block body %}
-
-    <section>
-        <div>
-            <h3>Current Balance: {{balance}}</h3>
-        </div>
-        <br>
-        <div>
-            <h2>Entries</h2>
-            {% if tasks | length < 1 %}
-                <h3>No logs</h3>
-                {% else %}
-                <table>
+<section class="card">
+    <div>
+        <h3>Current Balance: ₹{{balance}}</h3>
+    </div>
+    <br>
+    <div>
+        <h2>Entries</h2>
+        {% if tasks | length < 1 %}
+            <h3>No logs</h3>
+        {% else %}
+            <table class="table">
+                <tr>
+                    <th>Log ID</th>
+                    <th>Amount</th>
+                    <th>Transaction Type</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+                {% for task in tasks %}
                     <tr>
-                        <th>Log ID</th>
-                        <th>Amount</th>
-                        <th>Transaction Type</th>
-                        <th>Description</th>
-                        <th>date_created</th>
-                        <th>Actions</th>
+                        <td>{{task.log_id}}</td>
+                        {% if task.cash_type == "credit" %}
+                            <td class="credit">{{task.cash}}</td>
+                        {% else %}
+                            <td class="debit">{{task.cash}}</td>
+                        {% endif %}
+                        <td>{{task.cash_type}}</td>
+                        <td>{{task.desc}}</td>
+                        <td>{{task.date_created.strftime("%d-%m-%Y")}}</td>
+                        <td>
+                            <a href="/delete/{{task.log_id}}" class="btn">Delete</a>
+                            <a href="/edit/{{task.log_id}}" class="btn">Edit</a>
+                        </td>
                     </tr>
-                    {% for task in tasks %}
-                        <tr>
-                            <td>{{task.log_id}}</td>
-                            {% if task.cash_type == "credit" %}
-                            <td style="color: green;">{{task.cash}}</td>
-                            {% else %}
-                            <td style="color: red;">{{task.cash}}</td>
-                            {% endif %}    
-                            <td >{{task.cash_type}}</td>
-                            <td>{{task.desc}}</td>
-                            <td>{{task.date_created.strftime("%d-%m-%Y")}}</td>
-                            <td><a href="/delete/{{task.log_id}}">Delete</a>
-                            <a href="/edit/{{task.log_id}}">Edit</a></td>
-                        </tr>
-                    {% endfor %}
-                </table>
-                {% endif %}
-        </div>
-        <div>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+    <div>
+        <br>
+        <h2>Entry</h2>
+        <br>
+        <form action="/" method="POST" class="form">
+            <label for="cash_input">Amount:</label>
+            <input type="number" name="cash" id="cash_input" required>
             <br>
-            <h2>Entry</h2>
+            <label for="desc">Description:</label>
+            <input type="text" name="desc" id="desc">
             <br>
-            <form action="/" method ="POST">
-                <label for="cash_input">Amount:</label>
-                <input type="number" name="cash" id="cash_input" required>
-                <br>
-                <label for="desc">Description:</label>
-                <input type="text" name="desc" id="desc">
-                <br>
-                <label for="cash_type">Type</label>
-                <select name="cash_type" id="cash_type">
-                    <option value="debit">Debit</option>
-                    <option value="credit">Credit</option>
-                </select>
-                <br>
-                <input type="submit" value="Add" id="btn_add">
-            </form>
-        </div>
-    </section>
+            <label for="cash_type">Type</label>
+            <select name="cash_type" id="cash_type">
+                <option value="debit">Debit</option>
+                <option value="credit">Credit</option>
+            </select>
+            <br>
+            <input type="submit" value="Add" id="btn_add" class="btn">
+        </form>
+    </div>
+</section>
 {% endblock %}

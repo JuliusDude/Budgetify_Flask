@@ -1,12 +1,29 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Budgetify-Stats</title>
+<title>Budgetify - Stats</title>
 {% endblock %}
 
 {% block body %}
-    <div>
-        hi this is stats comming soon
-    </div>
-
+<div class="card">
+    <h2>Till Date Stats:</h2>
+    <table class="table">
+        <tr>
+            <td>Balance Amount</td>
+            <td>₹{{balance}}</td>
+        </tr>
+        <tr>
+            <td>Debit Amount</td>
+            <td>₹{{debit}}</td>
+        </tr>
+        <tr>
+            <td>Credit Amount</td>
+            <td>₹{{credit}}</td>
+        </tr>
+        <tr>
+            <td>Total Transactions</td>
+            <td>{{totalTransaction}}</td>
+        </tr>
+    </table>
+</div>
 {% endblock %}
