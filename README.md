@@ -25,7 +25,7 @@ Budgetify is a simple Flask-based web application to manage your expenses and in
 - Charts ❌
 - Refinement ✅
 - Styling ✅
-- Deployment V1 
+- Deployment V1 ✅
 
 ---
 ### How to Deploy Budgetify in your Local Machine
